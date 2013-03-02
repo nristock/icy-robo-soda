@@ -12,8 +12,9 @@
 #define MOTOR_RIGHT 2
 
 #define MOTORS_LEFT OCR1A
-#define MOTORS_RIGHT OCR1B
+#define MOTORS_RIGHT OCR2
 
+#define MD_STOP 0
 #define MD_FWD 1
 #define MD_REV 2
 

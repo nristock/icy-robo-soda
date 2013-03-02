@@ -8,6 +8,7 @@
 #ifndef SENSORS_H_
 #define SENSORS_H_
 
+#include <stdint.h>
 #include <stdbool.h>
 
 #define BTN_BACK 1
@@ -15,5 +16,6 @@
 
 void initSensors();
 bool readButton(uint8_t button);
+unsigned char readLineSensor();
 
 #endif /* SENSORS_H_ */

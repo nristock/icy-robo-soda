@@ -21,10 +21,10 @@ void initSensors() {
 bool readButton(uint8_t button) {
 	switch (button) {
 	case BTN_BACK:
-		return (PINB & (1 << PB0)) ? true : false;
+		return (PINB & (1 << PB0)) ? false : true;
 		break;
 	case BTN_FRONT:
-		return (PINB & (1 << PB1)) ? true : false;
+		return (PINB & (1 << PB1)) ? false : true;
 		break;
 	default:
 		return false;
