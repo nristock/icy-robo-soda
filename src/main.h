@@ -11,6 +11,7 @@
 int main();
 void readInputs();
 void handleTouchInterrupts();
+void handleAnalogButtonInterrupts();
 void hardwareInit();
 
 void doSomeCrazyStuffAtTheEnd();

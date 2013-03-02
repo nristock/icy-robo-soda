@@ -14,6 +14,7 @@
 #include "lib/icy-soda/motor.h"
 #include "lib/icy-soda/sensors.h"
 #include "lib/icy-soda/debug.h"
+#include "lib/icy-soda/anbuttons.h"
 
 #include "steering.h"
 
@@ -25,6 +26,9 @@ int main() {
 	hardwareInit();
 
 	while (1) {
+#ifndef RELEASE
+		handleAnalogButtonInterrupts();
+#endif
 		handleTouchInterrupts();
 
 		correctSteering();
@@ -106,7 +110,27 @@ void handleTouchInterrupts() {
 	}
 }
 
+void handleAnalogButtonInterrupts() {
+	if (isAnalogButtonDown(BTN_T4)) {
+		bool invert = false;
+		while (!isAnalogButtonDown(BTN_T1)) {
+			_delay_ms(100);
+
+			setMotor(MOTOR_LEFT, MD_STOP);
+			setMotor(MOTOR_RIGHT, MD_STOP);
+
+			debugOut(DBG1, invert);
+			debugOut(DBG2, !invert);
+			invert = !invert;
+		}
+		debugOut(DBG1, false);
+		debugOut(DBG2, false);
+	}
+}
+
 void hardwareInit() {
+	DDRA = 0x00;
+
 	initMotors();
 	initSensors();
 	enableDebug();
