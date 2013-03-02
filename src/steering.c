@@ -38,7 +38,7 @@ void correctSteering() {
 	if (lineArrayRaw & 0b00100000) {
 		lWeight += 10;
 	}
-	MOTORS_LEFT = 0;
+	MOTORS_LEFT = MAX_MOTOR_SPEED - (lWeight * 2);
 
 
 	//
@@ -52,5 +52,5 @@ void correctSteering() {
 	if (lineArrayRaw & 0x04) {
 		rWeight += 10;
 	}
-	MOTORS_RIGHT = 255 - (rWeight * 4);
+	MOTORS_RIGHT = MAX_MOTOR_SPEED - (rWeight * 2);
 }

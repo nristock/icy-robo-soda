@@ -10,6 +10,8 @@
 
 #include <stdbool.h>
 
+#define MAX_MOTOR_SPEED 100
+
 #include "lib/i2c/i2cmaster.h"
 #include "lib/icy-soda/motor.h"
 #include "lib/icy-soda/sensors.h"

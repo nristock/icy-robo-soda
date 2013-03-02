@@ -8,6 +8,10 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
+#ifndef MAX_MOTOR_SPEED
+#define MAX_MOTOR_SPEED 255
+#endif
+
 #define MOTOR_LEFT 1
 #define MOTOR_RIGHT 2
 

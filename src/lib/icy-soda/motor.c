@@ -10,10 +10,10 @@
 #include "motor.h"
 
 void initMotors() {
-	TCCR1A = (1 << COM1A1) | (1 << COM1B1) | (1 << WGM10) | (1 << WGM11);
-	TCCR1B = (1 << CS11) | (1 << CS10) | (1 << WGM12) | (1 << WGM13);
+	TCCR1A = (1 << COM1A1) | (1 << COM1B1) | (1 << WGM10);
+	TCCR1B = (1 << CS11) | (1 << CS10) | (1 << WGM12);
 
-	TCCR2 = (1 << WGM21) | (1<<CS22) | (1 << COM20);
+	TCCR2 = (1 << WGM21) | (1 << WGM20) | (1 << CS20) | (1 << COM21);
 
 	OCR1A = 0;
 	OCR2 = 0;
@@ -25,10 +25,10 @@ void initMotors() {
 void setMotor(uint8_t motor, uint8_t motorDirection) {
 	switch (motor) {
 	case MOTOR_LEFT:
-		if (motorDirection == MD_REV) {
+		if (motorDirection == MD_FWD) {
 			PORTD |= (1 << PD0);
 			PORTD &= ~(1 << PD1);
-		} else if (motorDirection == MD_FWD) {
+		} else if (motorDirection == MD_REV) {
 			PORTD &= ~(1 << PD0);
 			PORTD |= (1 << PD1);
 		} else {
@@ -38,10 +38,10 @@ void setMotor(uint8_t motor, uint8_t motorDirection) {
 		break;
 
 	case MOTOR_RIGHT:
-		if (motorDirection == MD_REV) {
+		if (motorDirection == MD_FWD) {
 			PORTD |= (1 << PD3);
 			PORTD &= ~(1 << PD2);
-		} else if (motorDirection == MD_FWD) {
+		} else if (motorDirection == MD_REV) {
 			PORTD &= ~(1 << PD3);
 			PORTD |= (1 << PD2);
 		} else {
