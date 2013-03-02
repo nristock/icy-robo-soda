@@ -13,4 +13,6 @@ void readInputs();
 void handleTouchInterrupts();
 void hardwareInit();
 
+void doSomeCrazyStuffAtTheEnd();
+
 #endif /* MAIN_H_ */

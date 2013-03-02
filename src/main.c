@@ -10,8 +10,6 @@
 
 #include <stdbool.h>
 
-#define MAX_MOTOR_SPEED 100
-
 #include "lib/i2c/i2cmaster.h"
 #include "lib/icy-soda/motor.h"
 #include "lib/icy-soda/sensors.h"
@@ -20,6 +18,8 @@
 #include "steering.h"
 
 #include "main.h"
+
+#define ROTATE_TIME 1700
 
 int main() {
 	hardwareInit();
@@ -34,18 +34,77 @@ int main() {
 void handleTouchInterrupts() {
 	if (readButton(BTN_FRONT)) {
 		debugOut(DBG1, true);
+
+		MOTORS_LEFT = MOTORS_RIGHT = 100;
+
+		setMotor(MOTOR_LEFT, MD_REV);
+		setMotor(MOTOR_RIGHT, MD_REV);
+		_delay_ms(1000);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_REV);
+		_delay_ms(ROTATE_TIME);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		_delay_ms(1000);
+
+		setMotor(MOTOR_LEFT, MD_REV);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		_delay_ms(ROTATE_TIME + 100);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		_delay_ms(2600);
+
+		setMotor(MOTOR_LEFT, MD_REV);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		_delay_ms(ROTATE_TIME - 300);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		_delay_ms(1400);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_REV);
+		_delay_ms(700);
 	} else {
 		debugOut(DBG1, false);
 	}
 
 	if (readButton(BTN_BACK)) {
 		debugOut(DBG2, true);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+
+		MOTORS_LEFT = 200;
+		MOTORS_RIGHT = 255;
+
+		while (!readButton(BTN_FRONT))
+			_delay_ms(20);
+
+		MOTORS_LEFT = MOTORS_RIGHT = 100;
+
+		setMotor(MOTOR_LEFT, MD_REV);
+		setMotor(MOTOR_RIGHT, MD_REV);
+		_delay_ms(1000);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_REV);
+		MOTORS_LEFT = MOTORS_RIGHT = 100;
+		_delay_ms(ROTATE_TIME);
+
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_FWD);
+		MOTORS_LEFT = 200;
+		MOTORS_RIGHT = 255;
+		_delay_ms(5000);
+
 	} else {
 		debugOut(DBG2, false);
 	}
 }
-
-
 
 void hardwareInit() {
 	initMotors();
@@ -66,4 +125,27 @@ void hardwareInit() {
 	debugOut(DBG4, false);
 	debugOut(DBG5, false);
 	debugOut(DBG6, false);
+}
+
+void doSomeCrazyStuffAtTheEnd() {
+	while (1) {
+		debugOut(DBG1, true);
+		_delay_ms(150);
+		debugOut(DBG1, false);
+		debugOut(DBG2, true);
+		_delay_ms(150);
+		debugOut(DBG2, false);
+		debugOut(DBG3, true);
+		_delay_ms(150);
+		debugOut(DBG3, false);
+		debugOut(DBG4, true);
+		_delay_ms(150);
+		debugOut(DBG4, false);
+		debugOut(DBG5, true);
+		_delay_ms(150);
+		debugOut(DBG5, false);
+		debugOut(DBG6, true);
+		_delay_ms(150);
+		debugOut(DBG6, false);
+	}
 }

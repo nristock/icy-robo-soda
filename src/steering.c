@@ -6,6 +6,7 @@
  */
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "lib/icy-soda/sensors.h"
 #include "lib/icy-soda/motor.h"
@@ -28,29 +29,75 @@ void correctSteering() {
 	setMotor(MOTOR_LEFT, MD_FWD);
 	setMotor(MOTOR_RIGHT, MD_FWD);
 
-	unsigned char lWeight = 0;
-	if (lineArrayRaw & 0b10000000) {
-		lWeight += 30;
-	}
-	if (lineArrayRaw & 0b01000000) {
-		lWeight += 20;
-	}
-	if (lineArrayRaw & 0b00100000) {
-		lWeight += 10;
-	}
-	MOTORS_LEFT = MAX_MOTOR_SPEED - (lWeight * 2);
+	bool leftRev = false;
+	bool rightRev = false;
 
+	bool leftOuter = false;
+	bool rightOuter = false;
 
-	//
 	unsigned char rWeight = 0;
 	if (lineArrayRaw & 0x01) {
-		rWeight += 30;
+		rWeight += 100;
+		rightOuter = true;
+		if (!leftRev) {
+			setMotor(MOTOR_RIGHT, MD_REV);
+			rightRev = true;
+			_delay_ms(75);
+		}
 	}
 	if (lineArrayRaw & 0x02) {
-		rWeight += 20;
+		rWeight += 80;
+		if (!leftRev) {
+			setMotor(MOTOR_RIGHT, MD_REV);
+			rightRev = true;
+			_delay_ms(75);
+		}
 	}
 	if (lineArrayRaw & 0x04) {
-		rWeight += 10;
+		rWeight += 60;
 	}
-	MOTORS_RIGHT = MAX_MOTOR_SPEED - (rWeight * 2);
+	if ((MAX_MOTOR_SPEED - (rWeight * 2)) < 70) {
+		MOTORS_RIGHT = 70 + 30;
+	} else {
+
+		MOTORS_RIGHT = MAX_MOTOR_SPEED + 50 - (rWeight * 2);
+	}
+
+	unsigned char lWeight = 0;
+	if (lineArrayRaw & 0b10000000) {
+		lWeight += 100;
+		leftOuter = true;
+		if (!rightRev) {
+			setMotor(MOTOR_LEFT, MD_REV);
+			leftRev = true;
+			_delay_ms(75);
+		}
+
+	}
+	if (lineArrayRaw & 0b01000000) {
+		lWeight += 80;
+		if (!rightRev) {
+			setMotor(MOTOR_LEFT, MD_REV);
+			leftRev = true;
+			_delay_ms(75);
+		}
+	}
+	if (lineArrayRaw & 0b00100000) {
+		lWeight += 60;
+	}
+	if ((MAX_MOTOR_SPEED - (lWeight * 2)) < 70) {
+		MOTORS_LEFT = 70;
+	} else {
+		MOTORS_LEFT = MAX_MOTOR_SPEED - (lWeight * 2);
+	}
+
+	if (leftOuter && rightOuter) {
+		setMotor(MOTOR_LEFT, MD_FWD);
+		setMotor(MOTOR_RIGHT, MD_REV);
+
+		MOTORS_LEFT = 110;
+		MOTORS_RIGHT = 60;
+
+		_delay_ms(70);
+	}
 }
