@@ -39,28 +39,28 @@ void correctSteering() {
 
 	if (lineArrayRaw & 0x01) {
 		setMotor(MOTOR_RIGHT, MD_REV);
-		MOTORS_RIGHT = 80;
+		MOTORS_RIGHT = 65;
 		MOTORS_LEFT = 100;
 
 		rightOuter = true;
-		_delay_ms(30);
+		_delay_ms(40);
 	} else if (lineArrayRaw & 0x02) {
 		MOTORS_RIGHT = 50;
-		_delay_ms(5);
+		_delay_ms(10);
 	}
 
 	// --------------
 	if (lineArrayRaw & 0x80) {
 		setMotor(MOTOR_LEFT, MD_REV);
-		MOTORS_LEFT = 80;
+		MOTORS_LEFT = 65;
 		MOTORS_RIGHT = 100;
 
 		leftOuter = true;
-		_delay_ms(30);
+		_delay_ms(40);
 
 	} else if (lineArrayRaw & 0x40) {
 		MOTORS_LEFT = 50;
-		_delay_ms(5);
+		_delay_ms(10);
 	}
 
 	//---------
@@ -71,6 +71,6 @@ void correctSteering() {
 		MOTORS_LEFT = 130;
 		MOTORS_RIGHT = 60;
 
-		_delay_ms(70);
+		_delay_ms(90);
 	}
 }

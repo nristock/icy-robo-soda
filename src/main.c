@@ -21,9 +21,11 @@
 #include "main.h"
 
 #define ROTATE_TIME 1700
+#define RELEASE 1
 
 int main() {
 	hardwareInit();
+
 
 	while (1) {
 #ifndef RELEASE
@@ -43,7 +45,7 @@ void handleTouchInterrupts() {
 
 		setMotor(MOTOR_LEFT, MD_REV);
 		setMotor(MOTOR_RIGHT, MD_REV);
-		_delay_ms(1000);
+		_delay_ms(700);
 
 		setMotor(MOTOR_LEFT, MD_FWD);
 		setMotor(MOTOR_RIGHT, MD_REV);
@@ -63,14 +65,11 @@ void handleTouchInterrupts() {
 
 		setMotor(MOTOR_LEFT, MD_REV);
 		setMotor(MOTOR_RIGHT, MD_FWD);
-		_delay_ms(ROTATE_TIME - 300);
-
-		setMotor(MOTOR_LEFT, MD_FWD);
-		setMotor(MOTOR_RIGHT, MD_FWD);
-		_delay_ms(1400);
+		_delay_ms(ROTATE_TIME - 230);
 
 		setMotor(MOTOR_LEFT, MD_FWD);
 		setMotor(MOTOR_RIGHT, MD_REV);
+		MOTORS_RIGHT = 60;
 		_delay_ms(700);
 	} else {
 		debugOut(DBG1, false);
@@ -83,7 +82,7 @@ void handleTouchInterrupts() {
 		setMotor(MOTOR_RIGHT, MD_FWD);
 
 		MOTORS_LEFT = 200;
-		MOTORS_RIGHT = 255;
+		MOTORS_RIGHT = 205;
 
 		while (!readButton(BTN_FRONT))
 			_delay_ms(20);
@@ -92,7 +91,7 @@ void handleTouchInterrupts() {
 
 		setMotor(MOTOR_LEFT, MD_REV);
 		setMotor(MOTOR_RIGHT, MD_REV);
-		_delay_ms(1000);
+		_delay_ms(800);
 
 		setMotor(MOTOR_LEFT, MD_FWD);
 		setMotor(MOTOR_RIGHT, MD_REV);
